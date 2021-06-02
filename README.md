@@ -127,7 +127,10 @@ information on what to include when reporting a bug.
  - Added `GLFW_FEATURE_UNIMPLEMENTED` error for incomplete backends (#1692)
  - Added `GLFW_ANGLE_PLATFORM_TYPE` init hint and `GLFW_ANGLE_PLATFORM_TYPE_*`
    values to select ANGLE backend (#1380)
+ - Added `GLFW_X11_XCB_VULKAN_SURFACE` init hint for selecting X11 Vulkan
+   surface extension (#1793)
  - Made joystick subsystem initialize at first use (#1284,#1646)
+ - Made `GLFW_DOUBLEBUFFER` a read-only window attribute
  - Updated the minimum required CMake version to 3.1
  - Disabled tests and examples by default when built as a CMake subdirectory
  - Bugfix: The CMake config-file package used an absolute path and was not
@@ -137,6 +140,7 @@ information on what to include when reporting a bug.
  - Bugfix: Built-in mappings failed because some OEMs re-used VID/PID (#1583)
  - Bugfix: Some extension loader headers did not prevent default OpenGL header
    inclusion (#1695)
+ - Bugfix: Buffers were swapped at creation on single-buffered windows (#1873)
  - [Win32] Added the `GLFW_WIN32_KEYBOARD_MENU` window hint for enabling access
            to the window menu
  - [Win32] Added a version info resource to the GLFW DLL
@@ -159,6 +163,13 @@ information on what to include when reporting a bug.
    configuration change (#1761)
  - [Win32] Bugfix: Initialization would segfault on Windows 8 (not 8.1) (#1775)
  - [Win32] Bugfix: Duplicate size events were not filtered (#1610)
+ - [Win32] Bugfix: Full screen windows were incorrectly resized by DPI changes
+   (#1582)
+ - [Win32] Bugfix: `GLFW_SCALE_TO_MONITOR` had no effect on systems older than
+   Windows 10 version 1703 (#1511)
+ - [Win32] Bugfix: `USE_MSVC_RUNTIME_LIBRARY_DLL` had no effect on CMake 3.15 or
+   later (#1783,#1796)
+ - [Win32] Bugfix: Compilation with LLVM for Windows failed (#1807,#1824,#1874)
  - [Cocoa] Added support for `VK_EXT_metal_surface` (#1619)
  - [Cocoa] Added locating the Vulkan loader at runtime in an application bundle
  - [Cocoa] Moved main menu creation to GLFW initialization time (#1649)
@@ -208,6 +219,8 @@ information on what to include when reporting a bug.
    combinaitons (#1598)
  - [X11] Bugfix: Keys pressed simultaneously with others were not always
    reported (#1112,#1415,#1472,#1616)
+ - [X11] Bugfix: Some window attributes were not applied on leaving fullscreen
+   (#1863)
  - [Wayland] Removed support for `wl_shell` (#1443)
  - [Wayland] Bugfix: The `GLFW_HAND_CURSOR` shape used the wrong image (#1432)
  - [Wayland] Bugfix: `CLOCK_MONOTONIC` was not correctly enabled
@@ -217,6 +230,7 @@ information on what to include when reporting a bug.
    (#1463)
  - [Wayland] Bugfix: Client-Side Decorations were destroyed in the wrong worder
    (#1798)
+ - [Wayland] Bugfix: Monitors physical size could report zero (#1784,#1792)
  - [POSIX] Bugfix: `CLOCK_MONOTONIC` was not correctly tested for or enabled
  - [NSGL] Removed enforcement of forward-compatible flag for core contexts
  - [NSGL] Bugfix: `GLFW_COCOA_RETINA_FRAMEBUFFER` had no effect on newer
@@ -282,6 +296,7 @@ skills.
  - Andrew Corrigan
  - Bailey Cosier
  - Noel Cower
+ - CuriouserThing
  - Jason Daly
  - Jarrod Davis
  - Olivier Delannoy
