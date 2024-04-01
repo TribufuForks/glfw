@@ -1,24 +1,34 @@
-project "GLFW"
-	kind "StaticLib"
-	language "C"
+--- @diagnostic disable: undefined-global
 
-	targetdir ("Binaries/" .. outputDir .. "/%{prj.name}")
-	objdir ("Intermediate/" .. outputDir .. "/%{prj.name}")
+project "glfw"
+    kind "StaticLib"
+    language "C"
 
-	files
-	{
-		"include/GLFW/glfw3.h",
-		"include/GLFW/glfw3native.h",
-		"src/glfw_config.h",
-		"src/context.c",
-		"src/init.c",
-		"src/input.c",
-		"src/monitor.c",
-		"src/vulkan.c",
-		"src/window.c"
+    targetdir("./bin/%{cfg.platform:gsub('-', '/')}")
+    objdir("./target/%{cfg.buildcfg}/obj/%{prj.name}/%{cfg.platform:gsub('-', '/')}")
+
+    files
+    {
+        "include/GLFW/glfw3.h",
+        "include/GLFW/glfw3native.h",
+        "src/glfw_config.h",
+        "src/context.c",
+        "src/init.c",
+        "src/input.c",
+        "src/monitor.c",
+        "src/vulkan.c",
+        "src/window.c"
     }
-    
-    filter "system:windows"
+
+    filter { "configurations:debug" }
+        runtime "Debug"
+        symbols "on"
+
+    filter { "configurations:release" }
+        runtime "Release"
+        optimize "on"
+
+    filter { "platforms:windows-*" }
         systemversion "latest"
         staticruntime "On"
 
@@ -35,41 +45,32 @@ project "GLFW"
             "src/osmesa_context.c"
         }
 
-        defines 
-        { 
+        defines
+        {
             "_GLFW_WIN32",
             "_CRT_SECURE_NO_WARNINGS"
         }
 
-	filter "system:linux"
-		pic "On"
+    filter { "platforms:linux-*" }
+        pic "On"
+        systemversion "latest"
+        staticruntime "On"
 
-		systemversion "latest"
-		staticruntime "On"
+        files
+        {
+            "src/x11_init.c",
+            "src/x11_monitor.c",
+            "src/x11_window.c",
+            "src/xkb_unicode.c",
+            "src/posix_time.c",
+            "src/posix_thread.c",
+            "src/glx_context.c",
+            "src/egl_context.c",
+            "src/osmesa_context.c",
+            "src/linux_joystick.c"
+        }
 
-		files
-		{
-			"src/x11_init.c",
-			"src/x11_monitor.c",
-			"src/x11_window.c",
-			"src/xkb_unicode.c",
-			"src/posix_time.c",
-			"src/posix_thread.c",
-			"src/glx_context.c",
-			"src/egl_context.c",
-			"src/osmesa_context.c",
-			"src/linux_joystick.c"
-		}
-
-		defines
-		{
-			"_GLFW_X11"
-		}
-
-	filter "configurations:Debug"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		runtime "Release"
-		optimize "on"
+        defines
+        {
+            "_GLFW_X11"
+        }
