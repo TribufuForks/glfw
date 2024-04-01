@@ -1,7 +1,7 @@
 # Custom output directories
 
-Binaries/
-Intermediate/
+bin/
+target/
 
 # The canonical out-of-tree build subdirectory
 build
